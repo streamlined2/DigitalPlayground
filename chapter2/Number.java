@@ -1,6 +1,7 @@
 package chapter2;
 
 import java.util.Arrays;
+import java.util.Comparator;
 
 public class Number implements Comparable<Number> {
 	
@@ -104,12 +105,25 @@ public class Number implements Comparable<Number> {
 		return count;
 	}
 	
-	public boolean isOrdered() {
+	public boolean sameOddEvenDigitsCount() {
+		return getOddDigitsCount()==getEvenDigitsCount();
+	}
+	
+	public boolean isAscending() {
+		return isOrdered(false);
+	}
+	
+	public boolean isDescending() {
+		return isOrdered(true);
+	}
+	
+	public boolean isOrdered(boolean descending) {
+		Comparator<Digit> ordering=descending?Comparator.reverseOrder():Comparator.naturalOrder();
 		if(digits.length>0) {
 			Digit prev=digits[0];
 			for(int k=1;k<digits.length;k++) {
 				Digit curr=digits[k];
-				if(curr.compareTo(prev)<0) return false;
+				if(ordering.compare(curr, prev)<0) return false;
 				else prev=curr;
 			}			
 		}

@@ -5,21 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import java.util.function.Predicate;
 
 public class NumberSequence {
-	
-	static class Range{
-		private final int from, to;
-		 Range(final int from,final int to){
-			 this.from=from;
-			 this.to=to;
-		 }
-		 int getFrom() { return from;}
-		 int getTo() { return to;}
-	}
 	
 	private int size;
 	private List<Number> numbers;
@@ -27,6 +19,11 @@ public class NumberSequence {
 	public NumberSequence(final int size) {
 		this.size=size;
 		numbers=new ArrayList<>(this.size);
+	}
+	
+	public NumberSequence(final List<Number> list) {
+		this.size=list.size();
+		numbers=list;
 	}
 	
 	public int getSize() {
@@ -39,7 +36,7 @@ public class NumberSequence {
 		for(Number n:numbers) {
 			s.append(n).append(separator);
 		}
-		s.delete(s.length()-separator.length(), s.length()-1);
+		if(numbers.size()>0) s.delete(s.length()-separator.length(), s.length()-1);
 		return s.toString();
 	}
 
@@ -90,6 +87,16 @@ public class NumberSequence {
 		return getSortedSet(byNumberSize(false)).last();//getPriorityQueue(true).peek();
 	}
 	
+	static class Range{
+		private final int from, to;
+		 Range(final int from,final int to){
+			 this.from=from;
+			 this.to=to;
+		 }
+		 int getFrom() { return from;}
+		 int getTo() { return to;}
+	}
+	
 	public Range getMedianRange() {
 		int from,to;
 		from=to=getMedianIndex();
@@ -112,6 +119,23 @@ public class NumberSequence {
 	}
 
 	private int getMedianIndex() { return numbers.size()/2; }
+	
+	public List<Number> getList(){
+		return Collections.unmodifiableList(numbers);
+	}
+	
+	public NumberSequence filter(Predicate<Number> p){
+		List<Number> filteredList=new ArrayList<>();
+		for(Number n:numbers) {
+			if(p.test(n)) filteredList.add(n);
+		}
+		return new NumberSequence(filteredList);
+	}
+	
+	public Optional<Number> first() {
+		if(numbers.size()>0) return Optional.of(numbers.get(0));
+		return Optional.ofNullable(null);
+	}
 	 
 	
 	/*

@@ -30,6 +30,12 @@ public class Runner {
 		System.out.printf("First number that has minimal set of different digits: %s\n", seq.getSortedList(NumberSequence.byUniqueCount(false)).get(0));
 		System.out.println();
 		
+		System.out.printf("Quantity of numbers that comprise only even digits: %s (%s)\n", seq.filter(Number::justEvenDigits).getSize(),seq.filter(Number::justEvenDigits));
+		System.out.printf("Numbers that comprise same quantity of even and odd digits: %s (%s)\n\n", seq.filter(Number::sameOddEvenDigitsCount).getSize(),seq.filter(Number::sameOddEvenDigitsCount));
+		
+		System.out.printf("First number with ascending digits: %s\n", seq.filter(Number::isAscending).first());
+		System.out.printf("First number with descending digits: %s\n", seq.filter(Number::isDescending).first());
+
 	}
 
 }
